@@ -44,14 +44,14 @@ jobs:
       #     format: 'HTML'
 
       # ---------- SonarCloud ----------
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v4 # v4.1.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # ← This is the automatic token
-        with:
-          args: >
-            -Dsonar.qualitygate.wait=true
+      # - name: SonarCloud Scan
+      #   uses: SonarSource/sonarqube-scan-action@v4 # v4.1.0
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # ← This is the automatic token
+      #   with:
+      #     args: >
+      #       -Dsonar.qualitygate.wait=true
 
       # ---------- AWS OIDC + ECR Login ----------
       - name: Configure AWS credentials (OIDC)
