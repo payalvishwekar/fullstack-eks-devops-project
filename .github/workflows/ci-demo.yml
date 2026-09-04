@@ -28,13 +28,13 @@ jobs:
           fetch-depth: 0
 
       # ---------- Security Scans ----------
-      # - name: Run Trivy filesystem scan
-      #   uses: aquasecurity/trivy-action@master # v0.36.0
-      #   with:
-      #     scan-type: fs
-      #     scan-ref: .
-      #     severity: CRITICAL,HIGH
-      #     #exit-code: 1
+      - name: Run Trivy filesystem scan
+        uses: aquasecurity/trivy-action@master # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL,HIGH
+          #exit-code: 1
 
       # - name: OWASP Dependency-Check
       #   uses: dependency-check/Dependency-Check_Action@main
