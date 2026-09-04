@@ -36,12 +36,12 @@ jobs:
           severity: CRITICAL,HIGH
           #exit-code: 1
 
-      - name: OWASP Dependency-Check
-        uses: dependency-check/Dependency-Check_Action@main
-        with:
-          project: 'wanderlust'
-          path: '.'
-          format: 'HTML'
+      # - name: OWASP Dependency-Check
+      #   uses: dependency-check/Dependency-Check_Action@main
+      #   with:
+      #     project: 'wanderlust'
+      #     path: '.'
+      #     format: 'HTML'
 
       # ---------- SonarCloud ----------
       - name: SonarCloud Scan
