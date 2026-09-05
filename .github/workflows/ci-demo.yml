@@ -46,7 +46,7 @@ jobs:
 
       # ---------- SonarCloud ----------
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@7295e0b8bfa4565993ad3b9d0a1c38c9e16e59c5  # v4.1.0
+        uses: SonarSource/sonarqube-scan-action@<40-character-SHA>  # v4.1.0
        # uses: SonarSource/sonarqube-scan-action@v4 # v4.1.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
