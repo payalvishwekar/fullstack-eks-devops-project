@@ -9,7 +9,7 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  ECR_REGISTRY: 287466334815.dkr.ecr.us-east-1.amazonaws.com   # ← change this
+  ECR_REGISTRY: 287466334815.dkr.ecr.us-east-1.amazonaws.com   
   BACKEND_IMAGE: wanderlust-backend
   FRONTEND_IMAGE: wanderlust-frontend
 
