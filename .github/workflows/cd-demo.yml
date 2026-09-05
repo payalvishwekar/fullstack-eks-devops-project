@@ -45,11 +45,11 @@ jobs:
 
           # Backend
           sed -i "s|image: .*${{ env.BACKEND_IMAGE }}.*|image: ${{ env.ECR_REGISTRY }}/${{ env.BACKEND_IMAGE }}:${IMAGE_TAG}|g" \
-            kubernetes/backend-deployment.yaml || true
+            kubernetes/backend.yaml || true
 
           # Frontend
           sed -i "s|image: .*${{ env.FRONTEND_IMAGE }}.*|image: ${{ env.ECR_REGISTRY }}/${{ env.FRONTEND_IMAGE }}:${IMAGE_TAG}|g" \
-            kubernetes/frontend-deployment.yaml || true
+            kubernetes/frontend.yaml || true
 
           # Also update if you have kustomization or other files
           # sed -i ... (add more if needed)
