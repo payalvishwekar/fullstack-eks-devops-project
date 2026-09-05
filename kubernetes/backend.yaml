@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: thatgeekcontainer/wanderlust-backend-beta:v5
+          image: 287466334815.dkr.ecr.us-east-1.amazonaws.com/wanderlust-backend:dbcf408dde50f33096475aee57ab46f1658b1ae4
           ports:
             - containerPort: 8080
 ---
