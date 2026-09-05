@@ -1,0 +1,69 @@
+name: CD - Update K8s Manifests for ArgoCD
+
+on:
+  workflow_run:
+    workflows: ["CI - Scan, Build & Push to ECR"]
+    types:
+      - completed
+    branches: [main, master]
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REGISTRY: 287466334815.dkr.ecr.us-east-1.amazonaws.com   # ← change this
+  BACKEND_IMAGE: wanderlust-backend
+  FRONTEND_IMAGE: wanderlust-frontend
+
+permissions:
+  contents: write          # needed to push updated manifests
+  id-token: write          # needed for OIDC
+
+jobs:
+  update-manifests:
+    # Only run if the CI workflow succeeded
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Important: checkout the branch that triggered CI
+          ref: ${{ github.event.workflow_run.head_branch }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}  # ← your role ARN
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Update image tags in Kubernetes manifests
+        run: |
+          IMAGE_TAG=${{ github.event.workflow_run.head_sha }}
+          
+          echo "Updating manifests with image tag: $IMAGE_TAG"
+
+          # Backend
+          sed -i "s|image: .*${{ env.BACKEND_IMAGE }}.*|image: ${{ env.ECR_REGISTRY }}/${{ env.BACKEND_IMAGE }}:${IMAGE_TAG}|g" \
+            kubernetes/backend-deployment.yaml || true
+
+          # Frontend
+          sed -i "s|image: .*${{ env.FRONTEND_IMAGE }}.*|image: ${{ env.ECR_REGISTRY }}/${{ env.FRONTEND_IMAGE }}:${IMAGE_TAG}|g" \
+            kubernetes/frontend-deployment.yaml || true
+
+          # Also update if you have kustomization or other files
+          # sed -i ... (add more if needed)
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add kubernetes/ || true
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update image tags to ${{ github.event.workflow_run.head_sha }}"
+            git push
+          fi
